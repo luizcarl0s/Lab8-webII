@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav float-right">
+					<li class="nav-item active">
+						<span>Cadastrar Disciplinas</span>
+					</li>
+				</ul>
+				<a class="btn btn-primary ms-1" th:href="@{/disciplinas/listar}" role="button">
+					<span>Listar Disciplinas</span>
+				</a>
+			</div>
+		</nav>
+
+		<div class="container" id="cadastro">
+			<div th:if="${sucesso} != null">
+				<div class="alert alert-success" role="alert">
+					<strong th:text="${sucesso}"></strong>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"
+						aria-label="Close"></button>
+				</div>
+			</div>
+
+			<form th:action="${disciplina.codigo == null} ? @{/disciplinas/salvar} : @{/disciplinas/editar}"
+				th:object="${disciplina}" method="POST">
+
+				<div th:if="${#fields.hasAnyErrors()}">
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<div th:each="error : ${#fields.detailedErrors()}">
+							<span th:text="${error.message}"></span>
+						</div>
+						<button type="button" class="btn-close" data-bs-dismiss="alert"
+							aria-label="Close"></button>
+					</div>
+				</div>
+
+				<div class="row mt-3">
+					<div class="col-md-6">
+						<label for="nome">Nome da Disciplina</label>
+						<input type="text"
+							class="form-control" id="nome"
+							placeholder="Nome da disciplina"
+							th:field="*{nome}"
+							th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid'" />
+					</div>
+					<div class="col-md-6">
+						<label for="cargaHoraria">Carga Horária</label>
+						<input type="number"
+							class="form-control" id="cargaHoraria"
+							placeholder="Carga horária"
+							th:field="*{cargaHoraria}"
+							th:classappend="${#fields.hasErrors('cargaHoraria')} ? 'is-invalid'" />
+					</div>
+				</div>
+
+				<div class="row mt-3">
+					<div class="col-md-6">
+						<label for="professor">Professor</label>
+						<select id="professor" class="form-select" th:field="*{professor}">
+							<option value="">Selecione o professor...</option>
+							<option th:each="p : ${professores}"
+								th:value="${p.matricula}"
+								th:text="${p.nome}"></option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<label for="curso">Curso</label>
+						<select id="curso" class="form-select" th:field="*{curso}">
+							<option value="">Selecione o curso...</option>
+							<option th:each="c : ${cursos}"
+								th:value="${c.codigo}"
+								th:text="${c.nome}"></option>
+						</select>
+					</div>
+				</div>
+
+				<input type="hidden" th:field="*{codigo}" />
+				<button type="submit" class="btn btn-primary btn-sm mt-3">Salvar</button>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

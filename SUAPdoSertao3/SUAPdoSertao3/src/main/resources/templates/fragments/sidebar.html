@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<nav class="sidebar sidebar-open navbar-expand-md" th:fragment="nav-sidebar">
+
+  <div class="collapse navbar-collapse" id="sidebarMenu">
+    <ul class="nav nav-pills flex-column w-100">
+
+      <li class="nav-item">
+        <a class="nav-link" th:href="@{/home}" sec:authorize="isAuthenticated()">
+          <i class="oi oi-home"></i> <span>Cadastro</span>
+        </a>
+      </li>
+
+      <!-- CURSOS -->
+      <ul class="nav nav-pills flex-column w-100"
+          sec:authorize="hasAnyAuthority('ADMIN','COORDENADOR')">
+        <li class="nav-item nav-section-label"><span>Cursos</span></li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/cursos/cadastrar}">
+            <i class="oi oi-plus"></i> <span>Cadastrar</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/cursos/listar}">
+            <i class="oi oi-spreadsheet"></i> <span>Listar</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- PROFESSORES -->
+      <ul class="nav nav-pills flex-column w-100"
+          sec:authorize="hasAnyAuthority('ADMIN','PROFESSOR')">
+        <li class="nav-item nav-section-label"><span>Professores</span></li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/professores/cadastrar}">
+            <i class="oi oi-plus"></i> <span>Cadastrar</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/professores/listar}">
+            <i class="oi oi-spreadsheet"></i> <span>Listar</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- DISCIPLINAS -->
+      <ul class="nav nav-pills flex-column w-100"
+          sec:authorize="hasAnyAuthority('ADMIN','COORDENADOR')">
+        <li class="nav-item nav-section-label"><span>Disciplinas</span></li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/disciplinas/cadastro}">
+            <i class="oi oi-plus"></i> <span>Cadastrar</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/disciplinas/listar}">
+            <i class="oi oi-spreadsheet"></i> <span>Listar</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- ALUNOS -->
+      <ul class="nav nav-pills flex-column w-100"
+          sec:authorize="hasAnyAuthority('ADMIN','ESTUDANTE')">
+        <li class="nav-item nav-section-label"><span>Alunos</span></li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/alunos/cadastrar}">
+            <i class="oi oi-plus"></i> <span>Cadastrar</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/alunos/listar}">
+            <i class="oi oi-spreadsheet"></i> <span>Listar</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/matriculas/listar}">
+            <i class="oi oi-badge"></i> <span>Matricular</span>
+          </a>
+        </li>
+      </ul>
+
+    </ul>
+  </div>
+
+</nav>
+</html>
