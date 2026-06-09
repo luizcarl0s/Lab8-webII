@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  log4j2.xml — fica em src/main/resources/
+
+  status="WARN"        -> nível de log do PRÓPRIO log4j (mensagens internas dele).
+  monitorInterval="30" -> a cada 30s o log4j relê este arquivo. Você pode mudar a
+                          configuração com a aplicação rodando, sem reiniciar.
+-->
+<Configuration status="WARN" monitorInterval="30">
+
+    <Appenders>
+
+        <!-- ============================================================
+             APPENDER 1: CONSOLE
+             Mostra os logs no console da IDE. Útil durante o desenvolvimento.
+             ============================================================ -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{dd/MM/yyyy HH:mm:ss} %-5level [%t] %c - %msg%n"/>
+        </Console>
+
+        <!-- ============================================================
+             APPENDER 2: ARQUIVO COM ROTAÇÃO
+             Grava em logs/suap.log. Quando o dia vira, o arquivo do dia
+             anterior é compactado em logs/suap-AAAA-MM-DD.log.gz (log rotation).
+             ============================================================ -->
+        <RollingFile name="RollingFile"
+                     fileName="logs/suap.log"
+                     filePattern="logs/suap-%d{yyyy-MM-dd}.log.gz">
+
+            <PatternLayout>
+                <Pattern>%d{dd/MM/yyyy HH:mm:ss} %-5level [%t] %c - %msg%n</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <!-- Roda o log quando muda o dia -->
+                <TimeBasedTriggeringPolicy interval="1"/>
+
+                <!-- (Opcional) Também rotaciona se o arquivo passar de 10 MB.
+                     Descomente para combinar rotação por data E por tamanho. -->
+                <!-- <SizeBasedTriggeringPolicy size="10 MB"/> -->
+            </Policies>
+
+            <!-- (Opcional) Mantém no máximo 30 arquivos antigos. Requer DefaultRolloverStrategy. -->
+            <!-- <DefaultRolloverStrategy max="30"/> -->
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <!-- Logger RAIZ (padrão): vale para tudo que não tiver um logger específico.
+             level="info" -> ignora TRACE e DEBUG (do Spring, Hibernate, etc.),
+             evitando poluir o log com ruído de bibliotecas. -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+
+        <!-- Logger ESPECÍFICO do seu código (pacote edu.ifpb.webII).
+             level="debug" -> aqui você quer ver tudo: INFO, WARN, ERROR e também DEBUG.
+             additivity="false" -> NÃO repassa para o Root, evitando log duplicado. -->
+        <Logger name="edu.ifpb.webII" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+
+    </Loggers>
+
+</Configuration>

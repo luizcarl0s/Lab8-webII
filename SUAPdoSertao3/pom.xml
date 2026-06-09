@@ -26,9 +26,24 @@
     <dependencies>
 
         <!-- Web + Thymeleaf -->
+        <!-- ATENÇÃO: aqui excluímos o starter de logging PADRÃO (Logback)
+             para podermos usar o Log4j2 no lugar dele. -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Log4j2: a biblioteca de logging que vamos usar.
+             Substitui o Logback que excluímos acima. -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
         <dependency>
